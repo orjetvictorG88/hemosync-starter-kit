@@ -24,10 +24,4 @@ python simulate_inventory.py         # ~10 seconds
 * The twelve canonical events -> the `etype` strings written to the ledger.
 * "Country pack" -> the `CONFIG` dictionary at the top of `hemosync_core.py`.
 
-## Next steps (what you still have to build for the hackathon)
 
-1. Put an API in front (FastAPI or Flask): one endpoint per method.
-2. Persist the ledger (SQLite first, Postgres later) and rebuild state by replaying events.
-3. A small offline-first web app (PWA) with three screens: lab release, inventory lights, bedside check.
-4. Add a read-only FHIR endpoint (BiologicallyDerivedProduct) so the slice speaks the ABBIS language.
-5. Replace the invented simulation parameters with synthetic data modelled on published figures.
