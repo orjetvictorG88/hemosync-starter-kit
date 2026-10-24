@@ -1,0 +1,23 @@
+{
+  "id": "/",
+  "name": "HemoSync Live",
+  "short_name": "HemoSync",
+  "description": "Synthetic HemoSync workflow demo. Not a medical device.",
+  "lang": "en",
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "browser"],
+  "orientation": "portrait-primary",
+  "background_color": "#FAF6F3",
+  "theme_color": "#6B0F2A",
+  "categories": ["health", "productivity"],
+  "icons": [
+    {
+      "src": "/assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

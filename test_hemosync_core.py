@@ -73,6 +73,15 @@ class TestGates(unittest.TestCase):
         bank.release(u.din, "t", "s")
         self.assertEqual(u.state, State.RELEASED)
 
+    def test_two_typings_from_the_same_person_are_not_independent(self):
+        bank = make_bank()
+        ok = bank.screen_donor("D-typing", 25, 70, 14, "M", "n")
+        unit = bank.collect("A999926000099", "D-typing", "RBC", "A+", "n", ok)
+        bank.record_typing(unit.din, "A+", "tech.same")
+        with self.assertRaises(GateViolation):
+            bank.record_typing(unit.din, "A+", "tech.same")
+        self.assertEqual(unit.typings, ["A+"])
+
     def test_incompatible_match_is_a_hard_stop(self):
         bank = make_bank()
         u = released_unit(bank, group="A+")
@@ -81,6 +90,19 @@ class TestGates(unittest.TestCase):
         self.assertIn("HARD STOP", str(cm.exception))
         with self.assertRaises(GateViolation):
             bank.reserve(u.din, "P-9", "A+", False, "t")       # patient group not confirmed twice
+
+    def test_multiple_patients_can_have_distinct_units_reserved(self):
+        bank = make_bank()
+        first = released_unit(bank, "A999926000010", group="A+")
+        second = released_unit(bank, "A999926000011", group="B+")
+
+        bank.reserve(first.din, "P-1", "A+", True, "nurse.a")
+        bank.reserve(second.din, "P-2", "B+", True, "nurse.a")
+
+        self.assertEqual(first.state, State.RESERVED)
+        self.assertEqual(first.reserved_for, "P-1")
+        self.assertEqual(second.state, State.RESERVED)
+        self.assertEqual(second.reserved_for, "P-2")
 
     def test_bedside_wristband_mismatch_is_a_hard_stop(self):
         bank = make_bank()
@@ -134,6 +156,14 @@ class TestCustody(unittest.TestCase):
         b.receive(u.din, a, "tech.b")
         self.assertEqual(b.units[u.din].state, State.RELEASED)
         self.assertEqual(b.units[u.din].site, "SITE-B")
+
+    def test_received_unit_leaves_the_sender_inventory(self):
+        a, b = make_bank("SITE-A"), make_bank("SITE-B")
+        unit = released_unit(a, "A999926000098")
+        a.dispatch(unit.din, "SITE-B", "tech")
+        b.receive(unit.din, a, "tech.b")
+        self.assertNotIn(unit.din, a.units)
+        self.assertIn(unit.din, b.units)
 
 
 class TestLedger(unittest.TestCase):
