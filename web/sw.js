@@ -1,10 +1,12 @@
-const CACHE_NAME = "hemosync-shell-v8";
+const CACHE_NAME = "hemosync-shell-v12";
 const SHELL = [
   "/",
   "/assets/styles.css",
-  "/assets/app.js",
+  "/assets/app.js?v=12",
   "/assets/manifest.webmanifest",
   "/assets/icon.svg",
+  "/assets/icon-192.png",
+  "/assets/icon-512.png",
 ];
 
 self.addEventListener("install", (event) => {

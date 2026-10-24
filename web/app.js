@@ -1092,7 +1092,7 @@ window.addEventListener("appinstalled", () => {
 
 void initialize();
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/assets/sw.js").catch((error) => {
+  navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch((error) => {
     console.error("HemoSync offline shell could not be registered.", error);
   });
 }

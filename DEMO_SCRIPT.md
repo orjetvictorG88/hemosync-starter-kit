@@ -25,6 +25,12 @@ Invoke-RestMethod "http://127.0.0.1:$port/ledger/verify"
 
 The health response should report `ok: true`; ledger verification should report `valid: true`.
 
+## Install the PWA on this computer
+
+Keep the local server running and open `http://localhost:8000/` in Chrome or Edge on this same computer. Select **Install HemoSync Live** in the address bar or browser menu. Once installed, open HemoSync from the Start menu or Apps list. If the browser does not show Install, first load the page online and reload it; confirm you are using `localhost` rather than opening `web\index.html` as a file.
+
+The install works on this computer because the server is intentionally bound to loopback. A phone or judge's computer cannot use your `localhost` address; sharing a link requires an HTTPS deployment and a separately configured backend. The current API is deliberately restricted to this computer and is not safe to expose publicly.
+
 ## Six-minute story
 
 ### 1. Set the boundary (30 seconds)

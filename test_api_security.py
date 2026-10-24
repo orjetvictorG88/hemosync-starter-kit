@@ -126,6 +126,18 @@ class TestLoopbackOnlyAPI(unittest.TestCase):
         self.assertFalse(api.is_loopback_client("localhost"))
         self.assertFalse(api.is_loopback_client(None))
 
+    def test_service_worker_is_available_at_root_scope(self):
+        response = api.service_worker()
+
+        self.assertEqual(response.path, api.WEB_DIR / "sw.js")
+        self.assertEqual(response.headers["service-worker-allowed"], "/")
+        self.assertEqual(response.headers["cache-control"], "no-cache")
+
+    def test_app_shell_revalidates_html_to_pick_up_new_releases(self):
+        response = api.frontend()
+
+        self.assertEqual(response.headers["cache-control"], "no-cache")
+
     def test_demo_encounters_are_explicitly_synthetic_and_include_chart_groups(self):
         response = api.demo_encounters()
 
